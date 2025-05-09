@@ -111,9 +111,3 @@ Python 3, вероятно, уже установлен. Проверьте `pyt
 
 * **Debian/Ubuntu:** `sudo apt update && sudo apt install python3 python3-pip`
 * **Fedora:** `sudo dnf install python3 python3-pip`
-
----
-
-## Лицензия
-
-Этот проект предоставляется на условиях лицензии [Укажите вашу лицензию, например MIT или без лицензии].
