@@ -1,0 +1,9 @@
+Flask
+Flask-SocketIO
+eventlet
+python-dotenv # Optional, but good for managing environment variables
+uuid
+datetime
+json
+os
+base64
