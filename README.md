@@ -1,10 +1,6 @@
 # Local Chat 3.0 WebUI
 
-Простое веб-приложение для локального чата с использованием Flask и Socket.IO.
-
-## Описание
-
-Это базовое приложение для чата, позволяющее пользователям подключаться, создавать чаты, отправлять текстовые сообщения и изображения, а также настраивать свой профиль и аватары чатов.
+It is a basic LAN chat application that allows users to connect, create chats, send text messages and images, and customize their profile and chat avatars.
 
 ## Возможности
 
