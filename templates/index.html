@@ -2,101 +2,151 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Local Chat</title> <link rel="stylesheet" href="/static/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElixAI Chat</title>
+    <link rel="stylesheet" href="/static/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
     <div class="overlay" id="loginOverlay">
         <div class="login-box">
-            <h2>Вход в чат</h2>
-            <input type="text" id="usernameInput" placeholder="Ваше имя" required> <input type="url" id="avatarUrlInput" placeholder="Ссылка на аватар (опционально)"> <button id="joinBtn">Войти в чат</button>
+            <h2>Добро пожаловать в ElixAI Chat</h2>
+            <p>Пожалуйста, представьтесь, чтобы начать общаться.</p>
+            <div class="input-group">
+                <label for="usernameInput">Ваше имя</label>
+                <input type="text" id="usernameInput" placeholder="Введите ваше имя" required>
+            </div>
+            <div class="input-group">
+                <label for="avatarUrlInput">URL аватара (опционально)</label>
+                <input type="url" id="avatarUrlInput" placeholder="https://example.com/avatar.png">
+            </div>
+            <button id="joinBtn" class="primary-btn">Войти в чат</button>
         </div>
     </div>
 
     <div class="app-container" style="display:none;">
         <div class="chat-list-panel">
-            <div class="user-profile-preview">
-                <img src="https://ui-avatars.com/api/?name=?" alt="User Avatar" id="currentUserAvatarSmall" class="avatar"> <div class="username-area">
-                    <span id="currentUsernameSmall">Имя пользователя</span>
-                </div>
-                <button class="settings-btn" id="generalSettingsBtn" title="Настройки пользователя"><i class="fas fa-cog"></i></button>
+            <div class="user-profile-summary">
+                <img src="https://ui-avatars.com/api/?name=?" alt="Current User Avatar" class="avatar" id="currentUserAvatarSmall">
+                <span class="username" id="currentUsernameSmall">Пользователь</span>
+                <button class="icon-btn" id="generalSettingsBtn"><i class="fas fa-cog"></i></button>
             </div>
             <div class="chat-list-header">
-                <input type="search" id="chatSearchInput" placeholder="Поиск или новый чат...">
-                <button id="addChatBtn" title="Создать новый чат"><i class="fas fa-plus-circle"></i></button>
+                <h3>Чаты</h3>
+                <input type="text" id="chatSearchInput" placeholder="Поиск чатов...">
+                <button class="icon-btn" id="addChatBtn"><i class="fas fa-plus"></i></button>
             </div>
             <ul class="chat-list" id="chatList">
                 </ul>
         </div>
 
-        <div class="main-chat-area">
-            <div class="chat-header" id="currentChatHeader" style="display:none;">
-                <div class="chat-info-wrapper">
-                    <img src="https://ui-avatars.com/api/?name=?" alt="Chat Avatar" id="chatHeaderAvatar" class="avatar"> <span id="chatHeaderName">Выберите чат</span>
-                </div>
-                <div class="chat-header-icons">
-                    <button class="icon-btn" id="currentChatSettingsBtn" title="Настройки чата" style="display:none;"><i class="fas fa-ellipsis-v"></i></button>
-                </div>
+        <div class="chat-panel">
+            <div class="chat-window-header" id="currentChatHeader" style="display: none;">
+                <img src="" alt="Chat Avatar" class="avatar" id="chatHeaderAvatar">
+                <span class="chat-name" id="chatHeaderName">Выберите чат</span>
+                <button class="icon-btn" id="currentChatSettingsBtn"><i class="fas fa-cog"></i></button>
             </div>
+
             <div class="chat-window" id="chatWindow">
-                <div class="no-chat-selected" id="noChatSelectedMessage">
-                    <i class="fas fa-comments"></i>
-                    <p>Выберите чат для начала общения или создайте новый.</p>
+                <div class="select-chat-placeholder">Выберите чат, чтобы начать общение.</div>
                 </div>
-                </div>
-            <div class="input-container" id="messageInputContainer" style="display:none;">
-                <button class="upload-btn" id="attachFileBtn" title="Прикрепить изображение"><i class="fas fa-paperclip"></i></button>
-                <input type="file" id="imageUploadInput" accept="image/*" style="display: none;">
-                <input id="messageText" type="text" placeholder="Напишите сообщение..." autocomplete="off">
-                <button id="sendBtn" title="Отправить"><i class="fas fa-paper-plane"></i></button>
-            </div>
-             <div class="image-preview-container" id="imagePreviewContainer" style="display:none;">
-                <img id="imagePreview" src="#" alt="Image preview"/>
-                <input type="text" id="imageCaptionInput" placeholder="Добавить подпись (необязательно)...">
-                <div class="preview-actions">
-                    <button id="sendImageBtn">Отправить картинку</button>
-                    <button id="cancelImageBtn">Отмена</button>
-                </div>
+
+            <div class="message-input-container" id="messageInputContainer" style="display: none;">
+                <textarea id="messageInput" placeholder="Введите сообщение..."></textarea>
+                <button id="sendBtn" class="icon-btn primary-btn"><i class="fas fa-paper-plane"></i></button>
             </div>
         </div>
     </div>
 
-    <div class="modal-overlay" id="generalSettingsModal">
-        <div class="modal-content">
-            <button class="close-modal-btn" data-modal-id="generalSettingsModal">&times;</button>
-            <h2>Настройки пользователя</h2>
-            <label for="generalSettingsUsername">Имя пользователя:</label>
-            <input type="text" id="generalSettingsUsername" required> <label for="generalSettingsAvatarUrl">URL аватара:</label>
-            <input type="url" id="generalSettingsAvatarUrl" placeholder="https://example.com/avatar.png">
+    <div class="modal" id="createChatModal" style="display: none;"> <div class="modal-content">
+            <button class="close-btn" data-modal-id="createChatModal">&times;</button>
+            <h2>Создать новый чат</h2>
 
-            <label for="generalSettingsAvatarFile">Или загрузить файл аватара:</label>
-            <input type="file" id="generalSettingsAvatarFile" accept="image/*">
-            <img src="https://ui-avatars.com/api/?name=?" alt="Avatar Preview" id="generalSettingsAvatarPreview" class="modal-avatar-preview"> <div class="modal-actions">
-                <button class="cancel-btn" data-modal-id="generalSettingsModal">Отмена</button>
-                <button class="save-btn" id="saveGeneralSettingsBtn">Сохранить</button>
+            <div class="input-group">
+                <label for="createChatName">Название чата:</label>
+                <input type="text" id="createChatName" placeholder="Название чата">
+            </div>
+
+            <div class="input-group">
+                <label for="createChatAvatarUrl">URL аватара чата:</label>
+                <input type="url" id="createChatAvatarUrl" placeholder="https://example.com/chat_avatar.png">
+            </div>
+
+            <div class="input-group">
+                <label for="createChatAvatarFile">Или загрузить файл аватара:</label>
+                <input type="file" id="createChatAvatarFile" accept="image/*">
+            </div>
+            <div class="image-preview-container">
+                <img src="https://ui-avatars.com/api/?name=NC" alt="Chat Avatar Preview" id="createChatAvatarPreview" class="modal-avatar-preview">
+            </div>
+
+            <div class="modal-actions">
+                <button class="cancel-btn" data-modal-id="createChatModal">Отмена</button>
+                <button class="save-btn primary-btn" id="saveNewChatBtn">Создать чат</button>
             </div>
         </div>
     </div>
 
-    <div class="modal-overlay" id="chatSettingsModal">
-        <div class="modal-content">
-            <button class="close-modal-btn" data-modal-id="chatSettingsModal">&times;</button>
+    <div class="modal" id="chatSettingsModal" style="display: none;"> <div class="modal-content">
+            <button class="close-btn" data-modal-id="chatSettingsModal">&times;</button>
             <h2 id="chatSettingsModalTitle">Настройки чата: <span></span></h2>
 
-            <label for="chatSettingsAvatarUrl">URL аватара чата:</label>
-            <input type="url" id="chatSettingsAvatarUrl" placeholder="https://example.com/chat_avatar.png">
+            <div class="input-group">
+                <label for="chatSettingsName">Название чата:</label>
+                <input type="text" id="chatSettingsName" placeholder="Название чата">
+            </div>
 
-            <label for="chatSettingsAvatarFile">Или загрузить файл аватара:</label>
-            <input type="file" id="chatSettingsAvatarFile" accept="image/*">
-            <img src="https://ui-avatars.com/api/?name=?" alt="Chat Avatar Preview" id="chatSettingsAvatarPreview" class="modal-avatar-preview"> <div class="modal-actions">
+            <div class="input-group">
+                <label for="chatSettingsAvatarUrl">URL аватара чата:</label>
+                <input type="url" id="chatSettingsAvatarUrl" placeholder="https://example.com/chat_avatar.png">
+            </div>
+
+            <div class="input-group">
+                <label for="chatSettingsAvatarFile">Или загрузить файл аватара:</label>
+                <input type="file" id="chatSettingsAvatarFile" accept="image/*">
+            </div>
+            <div class="image-preview-container">
+                <img src="https://ui-avatars.com/api/?name=?" alt="Chat Avatar Preview" id="chatSettingsAvatarPreview" class="modal-avatar-preview">
+            </div>
+
+            <div class="modal-actions">
                 <button class="cancel-btn" data-modal-id="chatSettingsModal">Отмена</button>
-                <button class="save-btn" id="saveChatSettingsBtn">Сохранить</button>
+                <button class="save-btn primary-btn" id="saveChatSettingsBtn">Сохранить</button>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <div class="modal" id="generalSettingsModal" style="display: none;"> <div class="modal-content">
+            <button class="close-btn" data-modal-id="generalSettingsModal">&times;</button>
+            <h2>Общие настройки</h2>
+
+            <div class="input-group">
+                <label for="generalSettingsUsername">Ваше имя:</label>
+                <input type="text" id="generalSettingsUsername" placeholder="Ваше имя" required>
+            </div>
+
+            <div class="input-group">
+                <label for="generalSettingsAvatarUrl">URL аватара:</label>
+                <input type="url" id="generalSettingsAvatarUrl" placeholder="https://example.com/avatar.png">
+            </div>
+
+            <div class="input-group">
+                <label for="generalSettingsAvatarFile">Или загрузить файл аватара:</label>
+                <input type="file" id="generalSettingsAvatarFile" accept="image/*">
+            </div>
+            <div class="image-preview-container">
+                <img src="https://ui-avatars.com/api/?name=?" alt="User Avatar Preview" id="generalSettingsAvatarPreview" class="modal-avatar-preview">
+            </div>
+
+            <div class="modal-actions">
+                <button class="cancel-btn" data-modal-id="generalSettingsModal">Отмена</button>
+                <button class="save-btn primary-btn" id="saveGeneralSettingsBtn">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
     <script src="/static/main.js"></script>
 </body>
 </html>
